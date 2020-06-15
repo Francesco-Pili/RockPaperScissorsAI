@@ -76,7 +76,7 @@ def game(deep=False, model = None, rounds=1):
         last3games.append(np.array([playerchoice,computerchoice]).reshape(6))
         
         if deep:
-            np.save("RPSflat.npy", np.array(playedgames))
+            np.save("RPSdata.npy", np.array(playedgames))
             X,y = compilefromgames(playedgames)
             model.fit(X,y,batch_size=10,epochs=200,verbose=0)
             model.save_weights('RPS.h5')
@@ -108,7 +108,7 @@ AI = {"y":True,
      "n":False}[input("Play with AI? y/n").lower()]
 
 if AI:
-    playedgames = list(np.load("RPSflat.npy"))
+    playedgames = list(np.load("RPSdata.npy"))
     from keras.models import Sequential
     from keras.layers import LSTM, Dense
     from keras.optimizers import Adam
