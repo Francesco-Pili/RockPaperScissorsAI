@@ -11,8 +11,11 @@ inttomove = {0:"Rock",
             2:"Scissors"}
 
 last3games= [np.zeros((6),dtype=int)] *3
-
+playedgames = list(np.load("RPSdata.npy"))
 def game(deep=False, model = None, rounds=1):
+    humanwins=0
+    compwins=0
+    draws=0
     for i in range(rounds):
         while True:
             try:
@@ -37,9 +40,7 @@ def game(deep=False, model = None, rounds=1):
         
 
             
-        humanwins=0
-        compwins=0
-        draws=0
+        
         print(f"You chose {inttomove[np.argmax(playerchoice)]}")
         time.sleep(0.2)
         print("I chose...")
@@ -80,7 +81,19 @@ def game(deep=False, model = None, rounds=1):
             X,y = compilefromgames(playedgames)
             model.fit(X,y,batch_size=10,epochs=200,verbose=0)
             model.save_weights('RPS.h5')
-        
+    if humanwins ==0 or humanwins > 1:
+        hs="s"
+    else:
+        hs=""
+    if compwins ==0 or compwins > 1:
+        cs="s"
+    else:
+        cs=""
+    if draws ==0 or draws > 1:
+        ds="s"
+    else:
+        ds=""
+    print(f"You won {humanwins} game{hs},\nI won {compwins} game{cs}\nWe drew {draws} time{ds}")
     
 def compilefromgames(gamelist):
     X= []
@@ -108,9 +121,9 @@ AI = {"y":True,
      "n":False}[input("Play with AI? y/n").lower()]
 
 if AI:
-    playedgames = list(np.load("RPSdata.npy"))
     from keras.models import Sequential
     from keras.layers import LSTM, Dense
     from keras.optimizers import Adam
     model =loadmodel()
     
+
