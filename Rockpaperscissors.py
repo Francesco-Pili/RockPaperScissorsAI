@@ -72,11 +72,13 @@ def game(deep=False, model = None, rounds=1):
             if np.all(computerchoice == movesdict["p"]):
                 print("You won!")
                 humanwins+=1
-        playedgames.append(np.array([playerchoice,computerchoice]).reshape(6))
-        del last3games[0]
-        last3games.append(np.array([playerchoice,computerchoice]).reshape(6))
+        
         
         if deep:
+            playedgames.append(np.array([playerchoice,computerchoice]).reshape(6))
+            del last3games[0]
+            last3games.append(np.array([playerchoice,computerchoice]).reshape(6))
+            
             np.save("RPSdata.npy", np.array(playedgames))
             X,y = compilefromgames(playedgames)
             model.fit(X,y,batch_size=10,epochs=200,verbose=0)
